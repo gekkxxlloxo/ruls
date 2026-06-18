@@ -1,0 +1,47 @@
+name: Auto Update Oppo & Custom Rules
+
+on:
+  schedule:
+    - cron: '0 22 * * *' # 每天北京时间早上 6 点自动执行
+  workflow_dispatch: # 支持手动点击运行
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Fetch and Merge Rules
+        run: |
+          # 1. 下载黑客及主流维护库的经典 OPPO 规则
+          curl -s https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/OPPO/OPPO.list | grep -E "DOMAIN|IP-CIDR" > temp.list
+          curl -s https://raw.githubusercontent.com/Accademia/Additional_Rule_For_Clash/master/Clash/OPPO/OPPO_Plus.list | grep -E "DOMAIN|IP-CIDR" >> temp.list
+
+          # 2. 物理强刷：注入你专属的海外一加变体、KeeTa 漏网之鱼等规则
+          echo "DOMAIN-SUFFIX,heytapmobile.com" >> temp.list
+          echo "DOMAIN-SUFFIX,heytapdl.com" >> temp.list
+          echo "DOMAIN-SUFFIX,heytapinc.com" >> temp.list
+          echo "DOMAIN-SUFFIX,heytapcs.com" >> temp.list
+          echo "DOMAIN-SUFFIX,oppomobile.com" >> temp.list
+          echo "DOMAIN-KEYWORD,heytap" >> temp.list
+          echo "DOMAIN-KEYWORD,euex" >> temp.list
+          
+          # 【新物理拦截】修复美团海外 KeeTa 漏网走代理超时问题（强制直连或随你分流）
+          echo "DOMAIN-SUFFIX,mykeeta.com" >> temp.list
+          echo "DOMAIN-KEYWORD,keeta" >> temp.list
+
+          # 3. 洗盐脱水：去除注释、空行，对所有规则进行唯一性去重并排序
+          grep -v '^#' temp.list | grep -v '^$' | sort -u > temp_clean.list
+
+          # 4. 覆盖写入你的核心规则文件
+          echo "# Auto generated rules - $(date)" > direct.list
+          cat temp_clean.list >> direct.list
+          rm temp.list temp_clean.list
+
+      - name: Commit and Push Changes
+        run: |
+          git config --local user.email "actions@github.com"
+          git config --local user.name "GitHub Actions"
+          git add direct.list
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto updated direct rules with euex and keeta variations" && git push)
