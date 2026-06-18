@@ -1,4 +1,8 @@
-# 欢太/一加系统服务海外变体直连
+# 一加/OPPO 欢太系统服务海外及欧洲(euex)变体
 DOMAIN-SUFFIX,heytapmobile.com
 DOMAIN-SUFFIX,heytapdl.com
+DOMAIN-SUFFIX,heytapinc.com
+DOMAIN-SUFFIX,heytapcs.com
+DOMAIN-SUFFIX,oppomobile.com
 DOMAIN-KEYWORD,heytap
+DOMAIN-KEYWORD,euex
