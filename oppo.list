@@ -6,3 +6,7 @@ DOMAIN-SUFFIX,heytapcs.com
 DOMAIN-SUFFIX,oppomobile.com
 DOMAIN-KEYWORD,heytap
 DOMAIN-KEYWORD,euex
+#美团海外版
+# 美团海外版 KeeTa 强行拉回国内直连
+DOMAIN-SUFFIX,mykeeta.com
+DOMAIN-KEYWORD,keeta
