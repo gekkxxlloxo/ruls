@@ -1,0 +1,12 @@
+payload:
+  # 域名规则
+  - DOMAIN-SUFFIX,googlevideo.com
+  - DOMAIN-SUFFIX,youtube.com
+  - DOMAIN-SUFFIX,ytimg.com
+  - DOMAIN-SUFFIX,ggpht.com
+
+  # IP 段规则
+  - IP-CIDR,173.194.0.0/16,no-resolve
+  - IP-CIDR,74.125.0.0/16,no-resolve
+  - IP-CIDR,142.250.0.0/15,no-resolve
+  - IP-CIDR,208.67.0.0/16,no-resolve
